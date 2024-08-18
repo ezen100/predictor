@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mines Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .input-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        label {
+            font-size: 1.1em;
+            color: #555;
+        }
+        input[type="number"], input[type="text"] {
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap: 10px;
+        }
+        .grid-item {
+            width: 100px;
+            height: 100px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 80%;
+            max-height: 80%;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gamblit Mines Predictor</h1>
+    <div class="input-container">
+        <label for="amount">Bomb Count:</label>
+        <input type="number" id="amount" min="1" max="25">
+        <br><br>
+        <label for="id">Your SEED (reset it every time):</label>
+        <input type="text" id="id">
+        <br><br>
+        <button onclick="generateGrid()">Predict</button>
+    </div>
+
+    <div id="grid"></div>
+
+    <script>
+        function generateGrid() {
+            const amount = document.getElementById('amount').value || 0;
+            const grid = document.getElementById('grid');
+
+            grid.innerHTML = '';  // Czyszczenie siatki
+
+            let positions = [];
+            for (let i = 0; i < 25; i++) {
+                positions.push(i);
+            }
+
+            // Tablica dla siatki
+            let gridItems = new Array(25).fill('diament.png');
+
+            // Losowe rozmieszczenie bomb
+            for (let i = 0; i < amount; i++) {
+                let randomIndex = Math.floor(Math.random() * positions.length);
+                let position = positions.splice(randomIndex, 1)[0];
+                gridItems[position] = 'bomba.png';
+            }
+
+            // Generowanie elementów siatki
+            gridItems.forEach(src => {
+                let gridItem = document.createElement('div');
+                gridItem.className = 'grid-item';
+
+                let img = document.createElement('img');
+                img.src = src;
+
+                gridItem.appendChild(img);
+                grid.appendChild(gridItem);
+            });
+        }
+    </script>
+</body>
+</html>
